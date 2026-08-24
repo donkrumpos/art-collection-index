@@ -32,8 +32,7 @@ def main():
     """)
     books = pages = 0
     for jsonl in sorted(glob.glob(os.path.join(PAGES_DIR, '*.jsonl'))):
-        slug = os.path.splitext(os.path.basename(jsonl))[0]
-        n = 0
+        by_path = {}  # last record wins (retries append corrected rows)
         with open(jsonl) as f:
             for line in f:
                 line = line.strip()
@@ -41,14 +40,17 @@ def main():
                     continue
                 try:
                     rec = json.loads(line)
+                    by_path[rec['path']] = rec
                 except json.JSONDecodeError:
                     continue
-                if rec.get('error') or rec.get('chars', 0) < MIN_CHARS:
-                    continue
-                book = os.path.dirname(rec['path'])
-                db.execute('INSERT INTO pages(book, page, path, text) VALUES (?,?,?,?)',
-                           (book, rec['file'], rec['path'], rec['text']))
-                n += 1
+        n = 0
+        for rec in by_path.values():
+            if rec.get('error') or rec.get('chars', 0) < MIN_CHARS:
+                continue
+            book = os.path.dirname(rec['path'])
+            db.execute('INSERT INTO pages(book, page, path, text) VALUES (?,?,?,?)',
+                       (book, rec['file'], rec['path'], rec['text']))
+            n += 1
         if n:
             books += 1
             pages += n

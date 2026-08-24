@@ -31,7 +31,7 @@ def main():
         "AND tag IN ('text page','title page','text with figure')"))
     db.close()
 
-    recs = []
+    by_path = {}  # last record wins (retries append corrected rows)
     for jsonl in glob.glob(os.path.join(PAGES_DIR, '*.jsonl')):
         with open(jsonl) as f:
             for line in f:
@@ -39,9 +39,11 @@ def main():
                 if not line:
                     continue
                 try:
-                    recs.append(json.loads(line))
+                    rec = json.loads(line)
+                    by_path[rec['path']] = rec
                 except json.JSONDecodeError:
                     pass
+    recs = list(by_path.values())
 
     confirmed = [r for r in recs if r.get('chars', 0) >= LOW]
     low = [r for r in recs if NEAR_ZERO <= r.get('chars', 0) < LOW
