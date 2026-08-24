@@ -42,8 +42,16 @@ def ensure_schema(conn):
         )
         """
     )
+    # 'source' distinguishes these zero-shot CLIP tags ('clip') from the richer
+    # LLM dossier tags ('llm', written by describe.py). Reruns here must not wipe
+    # the LLM tags — see the source-scoped DELETEs below.
+    cols = [r[1] for r in conn.execute("PRAGMA table_info(facets)")]
+    if "source" not in cols:
+        conn.execute("ALTER TABLE facets ADD COLUMN source TEXT DEFAULT 'clip'")
+        conn.execute("UPDATE facets SET source='clip' WHERE source IS NULL")
     conn.execute("CREATE INDEX IF NOT EXISTS idx_facets_ft ON facets(facet, tag)")
     conn.execute("CREATE INDEX IF NOT EXISTS idx_facets_path ON facets(path)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_facets_source ON facets(source)")
     conn.commit()
 
 
@@ -103,10 +111,10 @@ def main():
     n = len(paths)
     print(f"Auto-tagging {n} images against vocab.py...")
 
-    # --- folder facet (rebuild from paths) ---
-    conn.execute("DELETE FROM facets WHERE facet='folder'")
+    # --- folder facet (rebuild from paths) ---  source-scoped so LLM tags survive
+    conn.execute("DELETE FROM facets WHERE facet='folder' AND source='clip'")
     conn.executemany(
-        "INSERT OR REPLACE INTO facets(path, facet, tag, score) VALUES(?,?,?,1.0)",
+        "INSERT OR REPLACE INTO facets(path, facet, tag, score, source) VALUES(?,?,?,1.0,'clip')",
         [(p, "folder", p.split(os.sep)[0]) for p in paths],
     )
 
@@ -118,7 +126,7 @@ def main():
         tvecs = encode_prompts(model_id, prompts)     # (T, D)
         scores = MAT @ tvecs.T                         # (N, T) raw cosine
 
-        conn.execute("DELETE FROM facets WHERE facet=?", (facet,))
+        conn.execute("DELETE FROM facets WHERE facet=? AND source='clip'", (facet,))
         rows = []
         if facet == "kind":
             # 'artwork' wins unless a document-kind beats it by KIND_MARGIN.
@@ -146,7 +154,8 @@ def main():
                     if rank_pos == 0 or s >= V.MULTI_FLOOR:
                         rows.append((paths[i], facet, labels[j], s))
         conn.executemany(
-            "INSERT OR REPLACE INTO facets(path, facet, tag, score) VALUES(?,?,?,?)",
+            "INSERT OR REPLACE INTO facets(path, facet, tag, score, source) "
+            "VALUES(?,?,?,?,'clip')",
             rows,
         )
         conn.commit()

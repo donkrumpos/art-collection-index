@@ -70,18 +70,37 @@ PATH_INDEX = {p: i for i, p in enumerate(_PATHS)}
 N = len(_PATHS)
 
 # Build (facet,tag) -> sorted index array, and per-facet ordered tag lists.
+# LLM facets (source='llm', from describe.py) join the same store as the CLIP
+# zero-shot tags, so they appear in the filter chips alongside them. The 'source'
+# column may not exist on older DBs — degrade gracefully.
 print("Loading facets...")
+_has_source = any(r[1] == "source" for r in _conn.execute("PRAGMA table_info(facets)"))
+_LLM_TAGS = set()   # (facet, tag) pairs that came from the LLM
 _members = {}   # (facet, tag) -> list[int]
-for _p, _facet, _tag in _conn.execute("SELECT path, facet, tag FROM facets"):
+if _has_source:
+    _facet_rows = _conn.execute("SELECT path, facet, tag, source FROM facets")
+else:
+    _facet_rows = ((p, f, t, "clip") for p, f, t in
+                   _conn.execute("SELECT path, facet, tag FROM facets"))
+for _p, _facet, _tag, _src in _facet_rows:
     i = PATH_INDEX.get(_p)
     if i is not None:
         _members.setdefault((_facet, _tag), []).append(i)
+        if _src == "llm":
+            _LLM_TAGS.add((_facet, _tag))
 TAGSETS = {k: np.array(sorted(v), dtype=int) for k, v in _members.items()}
-FACET_TAGS = {}   # facet -> [(tag, count), ...] by count desc
+FACET_TAGS = {}   # facet -> [(tag, count, is_llm), ...] by count desc
 for (facet, tag), arr in TAGSETS.items():
-    FACET_TAGS.setdefault(facet, []).append((tag, len(arr)))
+    FACET_TAGS.setdefault(facet, []).append((tag, len(arr), (facet, tag) in _LLM_TAGS))
 for facet in FACET_TAGS:
     FACET_TAGS[facet].sort(key=lambda x: (-x[1], x[0].lower()))
+
+# Which images have an AI dossier (describe.py). Drives the ⓘ button per tile.
+try:
+    HAS_DOSSIER = set(r[0] for r in _conn.execute("SELECT path FROM descriptions"))
+except sqlite3.OperationalError:
+    HAS_DOSSIER = set()
+print(f"{len(HAS_DOSSIER)} images have an AI dossier.")
 
 # Indices hidden from the gallery by default: scanned text pages + blank pages.
 _hide_kinds = set(V.DOCUMENT_KINDS) | {"blank"}
@@ -172,6 +191,8 @@ def effective(sel, docs):
 
 def _row(i, score=None):
     d = {"path": _PATHS[i], "folder": _PATHS[i].split(os.sep)[0]}
+    if _PATHS[i] in HAS_DOSSIER:
+        d["info"] = True
     if score is not None:
         d["score"] = float(score)
     return d
@@ -265,7 +286,48 @@ figcaption{padding:8px 9px;font-size:11px;color:var(--dim);word-break:break-all;
 .sim{background:#2a2620;border:1px solid #3a3529;color:var(--ink);
  border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer}
 .sim:hover{border-color:var(--gold);color:var(--gold)}
+.info{background:#2a2620;border:1px solid #3a3529;color:var(--gold);
+ border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;font-weight:600}
+.info:hover{border-color:var(--gold);background:#332d20}
+.chip.llm{border-style:dashed;border-color:#5a7a5a}
+.chip.llm.on{border-color:var(--gold)}
+.chip.llm::before{content:"✦ ";opacity:.6}
 .foot{padding:10px 18px 70px;text-align:center;color:var(--dim)}
+/* ---- info dossier panel ---- */
+.overlay{position:fixed;inset:0;background:rgba(8,7,5,.72);backdrop-filter:blur(3px);
+ z-index:50;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+.overlay.on{display:flex}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+ max-width:920px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.5);overflow:hidden}
+.panel .head{display:flex;gap:16px;padding:16px;border-bottom:1px solid var(--line)}
+.panel .head img{width:220px;height:220px;object-fit:contain;background:#0c0b09;border-radius:8px;flex:0 0 auto}
+.panel .head .h{flex:1;min-width:0}
+.panel .cap{font-size:16px;color:var(--ink);font-weight:600;line-height:1.3}
+.panel .pathline{font-size:11px;color:var(--dim);word-break:break-all;margin-top:4px}
+.panel .model{font-size:11px;color:var(--dim);margin-top:8px}
+.panel .body{padding:16px;display:flex;flex-direction:column;gap:14px}
+.panel .sec .lab{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.panel .desc{font-size:14px;line-height:1.5;color:var(--ink)}
+.idbox{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#191712}
+.idbox .idtext{font-size:14px;color:var(--ink)}
+.idbox .idbasis{font-size:12px;color:var(--dim);margin-top:4px}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle}
+.badge.high{background:#2e5a2e;color:#bfe6bf}
+.badge.medium{background:#5a4e2e;color:#e6d9bf}
+.badge.low{background:#3a3529;color:#bdb49b}
+.badge.none{background:#3a2a2a;color:#d8b6b6}
+.taglist{display:flex;gap:6px;flex-wrap:wrap}
+.tg{background:#241f18;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;color:var(--ink)}
+.sw{display:inline-flex;align-items:center;gap:6px;background:#241f18;border:1px solid var(--line);border-radius:999px;padding:2px 10px 2px 4px;font-size:12px}
+.sw i{width:14px;height:14px;border-radius:50%;display:inline-block;border:1px solid #0006}
+.sd{position:relative}
+.sd pre{background:#0f0e0b;border:1px solid var(--line);border-radius:8px;padding:10px 12px;
+ font:12px/1.5 ui-monospace,Menlo,monospace;color:#d6cfbe;white-space:pre-wrap;word-break:break-word;margin:0}
+.copy{position:absolute;top:6px;right:6px;background:var(--gold);color:#241f12;border:none;
+ border-radius:6px;padding:3px 9px;font-size:11px;font-weight:600;cursor:pointer}
+.copy.done{background:#2e5a2e;color:#bfe6bf}
+.panel .close{position:absolute;top:14px;right:18px;font-size:22px;color:var(--dim);cursor:pointer;z-index:2}
+.panel{position:relative}
 </style></head><body>
 <header>
  <div class=top>
@@ -287,6 +349,9 @@ figcaption{padding:8px 9px;font-size:11px;color:var(--dim);word-break:break-all;
 </header>
 <div class=grid id=grid></div>
 <div class=foot id=foot></div>
+<div class=overlay id=overlay onclick="if(event.target===this)closeInfo()">
+ <div class=panel id=panel></div>
+</div>
 <script>
 const grid=document.getElementById('grid'), status=document.getElementById('status'),
       foot=document.getElementById('foot'), facetsEl=document.getElementById('facets'),
@@ -314,6 +379,8 @@ function tile(r){
  const rev=document.createElement('span'); rev.className='sim'; rev.textContent='⌖ Finder';
  rev.onclick=()=>fetch('/reveal?path='+encodeURIComponent(r.path));
  acts.appendChild(sim); acts.appendChild(rev);
+ if(r.info){const inf=document.createElement('span'); inf.className='info'; inf.textContent='ⓘ info';
+  inf.onclick=()=>openInfo(r.path); acts.appendChild(inf);}
  cap.appendChild(nm); cap.appendChild(acts);
  fig.appendChild(wrap); fig.appendChild(cap);
  return fig;
@@ -359,7 +426,7 @@ async function initFacets(){
   const row=document.createElement('div'); row.className='fgroup';
   const lab=document.createElement('div'); lab.className='flabel'; lab.textContent=g.label;
   const chips=document.createElement('div'); chips.className='chips';
-  g.tags.forEach(t=>{const c=document.createElement('span');c.className='chip';
+  g.tags.forEach(t=>{const c=document.createElement('span');c.className='chip'+(t.llm?' llm':'');
    c.dataset.k=g.facet+'|'+t.tag;
    c.innerHTML=t.tag+' <small>'+t.count.toLocaleString()+'</small>';
    c.onclick=()=>toggle(c.dataset.k); chips.appendChild(c);});
@@ -370,6 +437,53 @@ async function initFacets(){
   facetsEl.appendChild(row);
  });
 }
+// ---- info dossier panel ----
+const overlay=document.getElementById('overlay'), panel=document.getElementById('panel');
+function esc(s){const d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML;}
+function chipRow(arr){return '<div class=taglist>'+(arr||[]).map(t=>'<span class=tg>'+esc(t)+'</span>').join('')+'</div>';}
+function swatches(arr){return '<div class=taglist>'+(arr||[]).map(c=>
+ '<span class=sw><i style="background:'+cssColor(c)+'"></i>'+esc(c)+'</span>').join('')+'</div>';}
+function cssColor(name){const s=new Option().style;s.color='';s.color=name;return s.color||'#8888';}
+function closeInfo(){overlay.classList.remove('on');}
+async function openInfo(path){
+ overlay.classList.add('on');
+ panel.innerHTML='<div class=body>Loading dossier…</div>';
+ const d=await (await fetch('/api/describe?path='+encodeURIComponent(path))).json();
+ if(!d.dossier){panel.innerHTML='<span class=close onclick="closeInfo()">×</span>'+
+   '<div class=body>No dossier for this image yet.</div>';return;}
+ const x=d.dossier, cf=(x.id_confidence||'none');
+ const sd=esc(x.sd_prompt), neg=esc(x.sd_negative);
+ panel.innerHTML=
+  '<span class=close onclick="closeInfo()">×</span>'+
+  '<div class=head>'+
+   '<img src="/thumb?path='+encodeURIComponent(path)+'&s=440">'+
+   '<div class=h><div class=cap>'+esc(x.caption)+'</div>'+
+    '<div class=pathline>'+esc(path)+'</div>'+
+    '<div class=model>'+esc(d.model||'')+'</div></div>'+
+  '</div>'+
+  '<div class=body>'+
+   '<div class=sec><div class=lab>Description</div><div class=desc>'+esc(x.description)+'</div></div>'+
+   '<div class=sec><div class=lab>Identification</div>'+
+     '<div class=idbox><div class=idtext>'+esc(x.identification)+
+       '<span class="badge '+cf+'">'+cf.toUpperCase()+'</span></div>'+
+       '<div class=idbasis>'+esc(x.id_basis)+'</div></div></div>'+
+   (x.subjects&&x.subjects.length?'<div class=sec><div class=lab>Subjects</div>'+chipRow(x.subjects)+'</div>':'')+
+   (x.style&&x.style.length?'<div class=sec><div class=lab>Style'+(x.medium?' · Medium: '+esc(x.medium):'')+'</div>'+chipRow(x.style)+'</div>':
+     (x.medium?'<div class=sec><div class=lab>Medium</div>'+chipRow([x.medium])+'</div>':''))+
+   (x.palette&&x.palette.length?'<div class=sec><div class=lab>Palette'+(x.mood?' · Mood: '+esc(x.mood):'')+'</div>'+swatches(x.palette)+'</div>':'')+
+   '<div class=sec><div class=lab>Stable Diffusion prompt</div>'+
+     '<div class=sd><button class=copy onclick="copySD(this,\'p\')">copy</button><pre id=sdp>'+sd+'</pre></div></div>'+
+   (neg?'<div class=sec><div class=lab>Negative prompt</div>'+
+     '<div class=sd><button class=copy onclick="copySD(this,\'n\')">copy</button><pre id=sdn>'+neg+'</pre></div></div>':'')+
+  '</div>';
+}
+function copySD(btn,which){
+ const el=document.getElementById(which==='p'?'sdp':'sdn');
+ navigator.clipboard.writeText(el.textContent).then(()=>{
+  btn.textContent='copied ✓';btn.classList.add('done');
+  setTimeout(()=>{btn.textContent='copy';btn.classList.remove('done');},1200);});
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeInfo();});
 qEl.addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
 window.addEventListener('scroll',()=>{
  if(window.innerHeight+window.scrollY>=document.body.offsetHeight-500) load();
@@ -410,9 +524,23 @@ class Handler(BaseHTTPRequestHandler):
                     out.append({
                         "facet": facet,
                         "label": FACET_LABEL.get(facet, facet),
-                        "tags": [{"tag": t, "count": c} for t, c in tags],
+                        "tags": [{"tag": t, "count": c, "llm": llm}
+                                 for t, c, llm in tags],
                     })
                 return self._json({"total": N, "facets": out})
+
+            if u.path == "/api/describe":
+                path = q.get("path", [""])[0]
+                if path not in PATHSET:
+                    return self._send(404, b"no", "text/plain")
+                row = _conn.execute(
+                    "SELECT dossier_json, model, ts FROM descriptions WHERE path=?",
+                    (path,)).fetchone()
+                if not row:
+                    return self._json({"path": path, "dossier": None})
+                dossier = json.loads(row[0])
+                return self._json({"path": path, "dossier": dossier,
+                                   "model": row[1], "ts": row[2]})
 
             if u.path == "/api/browse":
                 page = int(q.get("page", ["0"])[0])

@@ -102,6 +102,42 @@ model id from the DB.
 
 ## Where this sits in the plan
 
-Phase 1 of `../PLAN.md`. Next phases (not built yet): folder-name → seed tags,
-LLM rich captions, descriptive renaming, an Astro search gallery. Those layer on
-top of this same `index.db`.
+Phase 1 of `../PLAN.md`. Next phases: folder-name → seed tags (done), LLM rich
+captions (Layer 3, below), descriptive renaming, an Astro search gallery. Those
+layer on top of this same `index.db`.
+
+## Layer 3 — per-image AI dossiers (`describe.py`)
+
+Each image gets a rich dossier: caption, description, subjects, medium, style,
+palette, mood, a Stable-Diffusion prompt (+ negative), and a **grounded**
+identification. Before asking the model what a piece *is*, `describe.py` pulls the
+image's CLIP neighbors and passes any DESCRIPTIVELY-named ones (artist folders,
+real titles — not hashes) as hints; the model may assert an artist/title only when
+a close, labeled neighbor supports it, else "reads like X" with low/none
+confidence + `id_basis`. It never invents provenance.
+
+Two swappable backends (one `describe_image(path, grounding)` function):
+
+```bash
+# free, on-device (Ollama). Good for captions/tags/SD prompts; IDs unreliable.
+_index/.venv/bin/python _index/describe.py --backend ollama --folder krampus --limit 10
+
+# gallery-grade (Claude vision). Honors grounded-ID. ~$0.02/image (claude-opus-4-8).
+export ANTHROPIC_API_KEY=sk-ant-...
+_index/.venv/bin/python _index/describe.py --backend anthropic --priority   # hero folders
+_index/.venv/bin/python _index/describe.py --backend anthropic --priority --estimate  # cost only
+```
+
+Resumable (skips paths already in `descriptions`), commits per image, `--limit`
+for tests, `--redo` to overwrite, `--folder` (repeatable) / `--priority`
+(fantasy art, krampus, esoterica metaphysical, murals).
+
+Stores `descriptions(path PK, …, dossier_json, identification, id_confidence,
+model, ts)` and explodes subjects/style/medium into `facets` with `source='llm'`
+so they join the gallery filter chips (the `facets` PK is now
+`(path, facet, tag, source)` so CLIP and LLM tags coexist; `auto_tag.py` reruns
+are `source`-scoped and never wipe LLM tags).
+
+In the gallery (`serve.py`): tiles with a dossier get an **ⓘ info** button opening
+a panel — description, identification + confidence badge, tag/palette chips, and a
+copy-able SD prompt. LLM facets show as dashed `✦` chips.
