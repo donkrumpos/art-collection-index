@@ -1,0 +1,16 @@
+# This 43GB collection is NOT versioned — only the _index/ tooling code is.
+/*
+!/.gitignore
+!/_index/
+
+# Within _index: keep code + docs, drop all generated data, venv, and the
+# OCR session's in-progress corpus outputs.
+_index/.venv/
+_index/__pycache__/
+_index/*.db
+_index/*.db-shm
+_index/*.db-wal
+_index/.thumbs/
+_index/last-search.html
+_index/research/
+_index/corpus.db

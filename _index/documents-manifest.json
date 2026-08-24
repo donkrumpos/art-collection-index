@@ -1,0 +1,831 @@
+{
+  "note": "CLIP-detected scanned text/document pages, grouped by source folder. Imperfect (some artwork with heavy text may appear); OCR text-length is the definitive filter. For a future OCR->research session.",
+  "total_document_pages": 6382,
+  "document_sets_5plus": 206,
+  "sets": [
+    {
+      "source_folder": "paper craft",
+      "pages": 773
+    },
+    {
+      "source_folder": "video games/angry bird star wars images",
+      "pages": 550
+    },
+    {
+      "source_folder": "rare books and manuscripts/De historia stirpium commentarii insignes  maximis impensis et uigiliis elaborati, adiectis",
+      "pages": 389
+    },
+    {
+      "source_folder": "vintage illustration",
+      "pages": 253
+    },
+    {
+      "source_folder": "esoterica metaphysical/alchemy/Alchemie/modernalchemy",
+      "pages": 209
+    },
+    {
+      "source_folder": "rare books and manuscripts/French ephemera",
+      "pages": 185
+    },
+    {
+      "source_folder": "textures/paper textures",
+      "pages": 166
+    },
+    {
+      "source_folder": "rare books and manuscripts/Vintage medical and anatomy",
+      "pages": 138
+    },
+    {
+      "source_folder": "type and lettering/wood type",
+      "pages": 97
+    },
+    {
+      "source_folder": "type and lettering/Speedball lettering (1957)",
+      "pages": 91
+    },
+    {
+      "source_folder": "artists-current/Edward Gorey Book Covers",
+      "pages": 74
+    },
+    {
+      "source_folder": "illustration, new",
+      "pages": 67
+    },
+    {
+      "source_folder": "rare books and manuscripts/Iacobi Christiani Shaefferi Icones insectorvm circa Ratisbonam  indigenorvm coloribvs natvram",
+      "pages": 67
+    },
+    {
+      "source_folder": "rare books and manuscripts/Vintage Science",
+      "pages": 63
+    },
+    {
+      "source_folder": "rare books and manuscripts/Ballon competition Lyon 1784",
+      "pages": 61
+    },
+    {
+      "source_folder": "costumes",
+      "pages": 60
+    },
+    {
+      "source_folder": "type and lettering/Lettering (1950)",
+      "pages": 60
+    },
+    {
+      "source_folder": "fantasy art/[DPG] Artbooks/__Hayao_Miyazaki_-_Daydream_Note",
+      "pages": 58
+    },
+    {
+      "source_folder": "rare books and manuscripts/Jazz-Age in Print (20s-30s) [VINTAGE]",
+      "pages": 57
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Morbid Anatomy Gallery",
+      "pages": 54
+    },
+    {
+      "source_folder": "rare books and manuscripts/Descrizione e notomia degli animali invertebrati della Sicilia citeriore  osservati vivi negli",
+      "pages": 49
+    },
+    {
+      "source_folder": "Toy theater/backgrounds",
+      "pages": 48
+    },
+    {
+      "source_folder": "minerals/Histoire des ve\u0301ge\u0301taux fossiles, ou, Recherches botaniques et ge\u0301ologiques sur les ve\u0301ge\u0301taux renferme\u0301s dans les diverses couches du globe",
+      "pages": 48
+    },
+    {
+      "source_folder": "rare books and manuscripts/Atlas Title Pages",
+      "pages": 47
+    },
+    {
+      "source_folder": "rare books and manuscripts/I Love My Electric Appliance!! [Happy People in Vintage Ads]",
+      "pages": 46
+    },
+    {
+      "source_folder": "rare books and manuscripts/Blog Features",
+      "pages": 41
+    },
+    {
+      "source_folder": "rare books and manuscripts/Dr. H.G. Bronn's Klassen und Ordnungen der Weichthiere (Malacozoa) Bd.3, Abt.2",
+      "pages": 39
+    },
+    {
+      "source_folder": "rare books and manuscripts/Coffee_ A Damn Fine Product [VINTAGE]",
+      "pages": 36
+    },
+    {
+      "source_folder": "steampunk",
+      "pages": 34
+    },
+    {
+      "source_folder": "rare books and manuscripts/Disneyland Souvenirs",
+      "pages": 33
+    },
+    {
+      "source_folder": "textures/book covers",
+      "pages": 33
+    },
+    {
+      "source_folder": "rare books and manuscripts/Beer and Booze_ A Damn Fine Product [VINTAGE]",
+      "pages": 32
+    },
+    {
+      "source_folder": "type and lettering/a guide to lettering",
+      "pages": 32
+    },
+    {
+      "source_folder": "maps",
+      "pages": 31
+    },
+    {
+      "source_folder": "rare books and manuscripts/Curious and Bizarre Creatures of Nature, Myth and Legend",
+      "pages": 30
+    },
+    {
+      "source_folder": "rare books and manuscripts/Jeu Substanto",
+      "pages": 30
+    },
+    {
+      "source_folder": "vintage illustration/1950s Sleaze-GGA",
+      "pages": 30
+    },
+    {
+      "source_folder": "rare books and manuscripts/Mythical Beasts",
+      "pages": 27
+    },
+    {
+      "source_folder": "type and lettering/typography/vintage typography",
+      "pages": 27
+    },
+    {
+      "source_folder": "rare books and manuscripts/Vintage Books",
+      "pages": 26
+    },
+    {
+      "source_folder": "rare books and manuscripts/Dictionnaire classique des sciences naturelles Atlas",
+      "pages": 25
+    },
+    {
+      "source_folder": "type and lettering/typewriter keys black",
+      "pages": 25
+    },
+    {
+      "source_folder": "design",
+      "pages": 24
+    },
+    {
+      "source_folder": "rare books and manuscripts/French Savants of Napoleon's Egyptian Expedition Collection",
+      "pages": 24
+    },
+    {
+      "source_folder": "rare books and manuscripts/Parks & Attractions",
+      "pages": 23
+    },
+    {
+      "source_folder": "type and lettering/writing",
+      "pages": 23
+    },
+    {
+      "source_folder": "fauna/Micrographia",
+      "pages": 22
+    },
+    {
+      "source_folder": "rare books and manuscripts/County Map Title Page Letterforms",
+      "pages": 22
+    },
+    {
+      "source_folder": "rare books and manuscripts/Sanborn Typography",
+      "pages": 22
+    },
+    {
+      "source_folder": "textures/air mail envelopes - Copy",
+      "pages": 22
+    },
+    {
+      "source_folder": "artists-old/William Blake - Night Thoughts",
+      "pages": 21
+    },
+    {
+      "source_folder": "rare books and manuscripts/Re\u0301sultats scientifiques de la campagne du Caudan dans le Golfe de Gascogne, aou\u0302t-septembre 1895",
+      "pages": 20
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Bookplate Collection",
+      "pages": 20
+    },
+    {
+      "source_folder": "phrenology",
+      "pages": 19
+    },
+    {
+      "source_folder": "rare books and manuscripts/Enchanted little folk of Faeryland",
+      "pages": 19
+    },
+    {
+      "source_folder": "rare books and manuscripts/Jamnitzer Perspectiva",
+      "pages": 19
+    },
+    {
+      "source_folder": "rare books and manuscripts/mon petit the\u0301atre (1946)",
+      "pages": 19
+    },
+    {
+      "source_folder": "artists-current/Alexander Aksinin",
+      "pages": 18
+    },
+    {
+      "source_folder": "rare books and manuscripts/Krazy Kids Items",
+      "pages": 18
+    },
+    {
+      "source_folder": "textures/air mail envelopes",
+      "pages": 18
+    },
+    {
+      "source_folder": "type and lettering/letters/wood type 3",
+      "pages": 18
+    },
+    {
+      "source_folder": "type and lettering/modernlettering",
+      "pages": 18
+    },
+    {
+      "source_folder": "medical and science",
+      "pages": 17
+    },
+    {
+      "source_folder": "Toy theater",
+      "pages": 16
+    },
+    {
+      "source_folder": "artists-old/kircher, athanasius/Ars Magna Lucis et Umbrae",
+      "pages": 16
+    },
+    {
+      "source_folder": "natural history/An account of the Indian Triaxonia collected by the Royal Indian Marine Survey Ship Investigator",
+      "pages": 16
+    },
+    {
+      "source_folder": "natural history/Andreas Cellarius",
+      "pages": 16
+    },
+    {
+      "source_folder": "poster design",
+      "pages": 16
+    },
+    {
+      "source_folder": "rare books and manuscripts/Jack of All Trades II",
+      "pages": 16
+    },
+    {
+      "source_folder": "rare books and manuscripts/Sympathy for the Devil",
+      "pages": 16
+    },
+    {
+      "source_folder": "shells-mollusks/Elements of conchology  an introduction to the natural history of shells and of the animals",
+      "pages": 16
+    },
+    {
+      "source_folder": "antique maps",
+      "pages": 15
+    },
+    {
+      "source_folder": "esoterica metaphysical/alchemy",
+      "pages": 15
+    },
+    {
+      "source_folder": "rare books and manuscripts/Proceedings of the Zoological Society of London 1880",
+      "pages": 15
+    },
+    {
+      "source_folder": "rare books and manuscripts/Victorian Infographics",
+      "pages": 15
+    },
+    {
+      "source_folder": "rare books and manuscripts/marcus gheeraersts I/aesop",
+      "pages": 15
+    },
+    {
+      "source_folder": "type and lettering/Typewriter keys white",
+      "pages": 15
+    },
+    {
+      "source_folder": "type and lettering/album de lettres n5",
+      "pages": 15
+    },
+    {
+      "source_folder": "rare books and manuscripts/De Aquatilibus",
+      "pages": 14
+    },
+    {
+      "source_folder": "rare books and manuscripts/Holiday Themes",
+      "pages": 14
+    },
+    {
+      "source_folder": "rare books and manuscripts/Vintage Book Covers",
+      "pages": 14
+    },
+    {
+      "source_folder": "rare books and manuscripts/Vintage Magazines",
+      "pages": 14
+    },
+    {
+      "source_folder": "textures/grunge textures",
+      "pages": 14
+    },
+    {
+      "source_folder": "type and lettering/Chromatic Wood Type",
+      "pages": 14
+    },
+    {
+      "source_folder": "type and lettering/typography",
+      "pages": 14
+    },
+    {
+      "source_folder": "artists-old/hans holbein death letters",
+      "pages": 13
+    },
+    {
+      "source_folder": "engravings",
+      "pages": 13
+    },
+    {
+      "source_folder": "fantasy art",
+      "pages": 13
+    },
+    {
+      "source_folder": "rare books and manuscripts/Bellicorum Instrumentorum Liber",
+      "pages": 13
+    },
+    {
+      "source_folder": "rare books and manuscripts/Emblemata Nova",
+      "pages": 13
+    },
+    {
+      "source_folder": "rare books and manuscripts/Mouth of hell",
+      "pages": 13
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Artillery Book",
+      "pages": 13
+    },
+    {
+      "source_folder": "rare books and manuscripts/Zanerian Alphabets",
+      "pages": 13
+    },
+    {
+      "source_folder": "type and lettering/metal type letters and numbers",
+      "pages": 13
+    },
+    {
+      "source_folder": "type and lettering/typography/Ornamental Typography Revisited",
+      "pages": 13
+    },
+    {
+      "source_folder": "gijoe/1982",
+      "pages": 12
+    },
+    {
+      "source_folder": "natural history/\u00c6olididae e famiglie affini del porto di Genova pt.1 (1877-1879)",
+      "pages": 12
+    },
+    {
+      "source_folder": "rare books and manuscripts/Codex Aureus",
+      "pages": 12
+    },
+    {
+      "source_folder": "rare books and manuscripts/Flora Brasiliensis, enumeratio plantarum in Brasilia hactenus detectarum v.3, pt.5",
+      "pages": 12
+    },
+    {
+      "source_folder": "rare books and manuscripts/Herbier de la France 97-144",
+      "pages": 12
+    },
+    {
+      "source_folder": "rare books and manuscripts/Nuclear Reactor Wall Charts",
+      "pages": 12
+    },
+    {
+      "source_folder": "rare books and manuscripts/Puzzle and Game Maps",
+      "pages": 12
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Royal Anjou Bible",
+      "pages": 12
+    },
+    {
+      "source_folder": "science",
+      "pages": 12
+    },
+    {
+      "source_folder": "textures/cardboard_and_cardstock_textures/Cardboard_and_cardstock_textures",
+      "pages": 12
+    },
+    {
+      "source_folder": "vintage illustration/morbid anatomy visual library",
+      "pages": 12
+    },
+    {
+      "source_folder": "artists-current/Alexander Brodsky and Ilya Utkin",
+      "pages": 11
+    },
+    {
+      "source_folder": "rare books and manuscripts/Bestiary - Bodleian MS Douce 88",
+      "pages": 11
+    },
+    {
+      "source_folder": "rare books and manuscripts/Black and White",
+      "pages": 11
+    },
+    {
+      "source_folder": "rare books and manuscripts/Books, Diaries, Broadsides, Epistles, Letters",
+      "pages": 11
+    },
+    {
+      "source_folder": "rare books and manuscripts/Histoire naturelle, anatomie",
+      "pages": 11
+    },
+    {
+      "source_folder": "rare books and manuscripts/Modern Rejection",
+      "pages": 11
+    },
+    {
+      "source_folder": "rare books and manuscripts/Persian Poetics",
+      "pages": 11
+    },
+    {
+      "source_folder": "rare books and manuscripts/Proceedings of the Zoological Society of London 1871",
+      "pages": 11
+    },
+    {
+      "source_folder": "rare books and manuscripts/Tractatus de Herbis",
+      "pages": 11
+    },
+    {
+      "source_folder": "rare books and manuscripts/Writing Blanks",
+      "pages": 11
+    },
+    {
+      "source_folder": "vintage illustration/An Atlas of Anatomy",
+      "pages": 11
+    },
+    {
+      "source_folder": "antiquarian prints",
+      "pages": 10
+    },
+    {
+      "source_folder": "artists-current/Essig, Daniel",
+      "pages": 10
+    },
+    {
+      "source_folder": "artists-old/Topsell, Edward",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/Attractive Dust Jackets",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/Description des mollusques fossiles qui se trouvent dans les gre\u0300s verts des environs de Gene\u0300ve atlas",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/Kilian Grotesque Ornament",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/Liber Chronicarum",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/Maps of Places",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/Proceedings of the Zoological Society of London 1872",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/Russian Satirical Journals",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/Sachsenspiegel",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/Still Life Meets Performance Art",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Rhetorica",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Theatre of Gunpowder",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/Unterhaltungen aus der Naturgeschichte  [hrsg. von Gottlieb Tobias Wilhelm, fortgesetzt von",
+      "pages": 10
+    },
+    {
+      "source_folder": "rare books and manuscripts/Watch-Paper Prints",
+      "pages": 10
+    },
+    {
+      "source_folder": "type and lettering/Calligraphy Letterform Album",
+      "pages": 10
+    },
+    {
+      "source_folder": "diagrams that changed the world",
+      "pages": 9
+    },
+    {
+      "source_folder": "natural history/Proceedings of the Zoological Society of London 1870",
+      "pages": 9
+    },
+    {
+      "source_folder": "rare books and manuscripts/Beautiful Bookbinding",
+      "pages": 9
+    },
+    {
+      "source_folder": "rare books and manuscripts/Blake Illuminations",
+      "pages": 9
+    },
+    {
+      "source_folder": "rare books and manuscripts/Botanical Beasties",
+      "pages": 9
+    },
+    {
+      "source_folder": "rare books and manuscripts/Icones plantarum asiaticarum pt.2",
+      "pages": 9
+    },
+    {
+      "source_folder": "rare books and manuscripts/Ringling Circus Museum in Florida",
+      "pages": 9
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Dutch Revolt",
+      "pages": 9
+    },
+    {
+      "source_folder": "type and lettering/invented alphabets",
+      "pages": 9
+    },
+    {
+      "source_folder": "artists-old/kircher, athanasius",
+      "pages": 8
+    },
+    {
+      "source_folder": "book arts",
+      "pages": 8
+    },
+    {
+      "source_folder": "esoterica metaphysical/geomancy",
+      "pages": 8
+    },
+    {
+      "source_folder": "rare books and manuscripts/Bodleian Manuscripts",
+      "pages": 8
+    },
+    {
+      "source_folder": "rare books and manuscripts/Butterflies and moths, shown to the children",
+      "pages": 8
+    },
+    {
+      "source_folder": "rare books and manuscripts/Early Explosives",
+      "pages": 8
+    },
+    {
+      "source_folder": "rare books and manuscripts/Liber Floridus",
+      "pages": 8
+    },
+    {
+      "source_folder": "rare books and manuscripts/Our native ferns, or, A history of the British species and their varieties v.1",
+      "pages": 8
+    },
+    {
+      "source_folder": "rare books and manuscripts/Punctuation",
+      "pages": 8
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Geometric Landscape",
+      "pages": 8
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Turner's Manual",
+      "pages": 8
+    },
+    {
+      "source_folder": "rare books and manuscripts/Time After Time",
+      "pages": 8
+    },
+    {
+      "source_folder": "rare books and manuscripts/Vintage Lettering",
+      "pages": 8
+    },
+    {
+      "source_folder": "type and lettering",
+      "pages": 8
+    },
+    {
+      "source_folder": "vintage illustration/A modern storybook",
+      "pages": 8
+    },
+    {
+      "source_folder": "electronics",
+      "pages": 7
+    },
+    {
+      "source_folder": "panopticon",
+      "pages": 7
+    },
+    {
+      "source_folder": "rare books and manuscripts/From Kitchens Past - The Vintage Kitchen",
+      "pages": 7
+    },
+    {
+      "source_folder": "rare books and manuscripts/Gods of the Ancients",
+      "pages": 7
+    },
+    {
+      "source_folder": "rare books and manuscripts/Maastricht Ceramic Design",
+      "pages": 7
+    },
+    {
+      "source_folder": "rare books and manuscripts/Mid-Century Illustrated Originals",
+      "pages": 7
+    },
+    {
+      "source_folder": "rare books and manuscripts/Nature Observed",
+      "pages": 7
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Knightly Arts",
+      "pages": 7
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Romance of Alexander",
+      "pages": 7
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Vallard Atlas",
+      "pages": 7
+    },
+    {
+      "source_folder": "rare books and manuscripts/Vintage Paper",
+      "pages": 7
+    },
+    {
+      "source_folder": "textures/fabric_Textures",
+      "pages": 7
+    },
+    {
+      "source_folder": "artists-current/Cornell-Joseph",
+      "pages": 6
+    },
+    {
+      "source_folder": "artists-old/Lucas van Leyden",
+      "pages": 6
+    },
+    {
+      "source_folder": "artists-old/durer",
+      "pages": 6
+    },
+    {
+      "source_folder": "esoterica metaphysical",
+      "pages": 6
+    },
+    {
+      "source_folder": "fauna/insects/Symbola faunae insectorum Helvetiae exhibentia vel species novas vel nondum depictas. Fasc. 1",
+      "pages": 6
+    },
+    {
+      "source_folder": "interface",
+      "pages": 6
+    },
+    {
+      "source_folder": "natural history",
+      "pages": 6
+    },
+    {
+      "source_folder": "rare books and manuscripts/Armorial Nobiliaire",
+      "pages": 6
+    },
+    {
+      "source_folder": "rare books and manuscripts/Bat illustrations and art",
+      "pages": 6
+    },
+    {
+      "source_folder": "rare books and manuscripts/Beschouwing der wonderen Gods  in de mintsgeachte schepzelen of nederlandsche insecten",
+      "pages": 6
+    },
+    {
+      "source_folder": "rare books and manuscripts/British Printed Images",
+      "pages": 6
+    },
+    {
+      "source_folder": "rare books and manuscripts/Description de ammonites des calcaires du cha\u0302teau de Crussol, Arde\u0300che",
+      "pages": 6
+    },
+    {
+      "source_folder": "rare books and manuscripts/Dutch Covers",
+      "pages": 6
+    },
+    {
+      "source_folder": "rare books and manuscripts/Encyclopedia Britainica 1771",
+      "pages": 6
+    },
+    {
+      "source_folder": "rare books and manuscripts/Illustrator Charles Robinson",
+      "pages": 6
+    },
+    {
+      "source_folder": "rare books and manuscripts/Kids Books",
+      "pages": 6
+    },
+    {
+      "source_folder": "rare books and manuscripts/Landjuweel and the Chambers of Rhetoric",
+      "pages": 6
+    },
+    {
+      "source_folder": "rare books and manuscripts/The September Testament",
+      "pages": 6
+    },
+    {
+      "source_folder": "rare books and manuscripts/The Time of the Hunt",
+      "pages": 6
+    },
+    {
+      "source_folder": "game art",
+      "pages": 5
+    },
+    {
+      "source_folder": "gijoe/1983",
+      "pages": 5
+    },
+    {
+      "source_folder": "krampus",
+      "pages": 5
+    },
+    {
+      "source_folder": "palmistry",
+      "pages": 5
+    },
+    {
+      "source_folder": "puppets",
+      "pages": 5
+    },
+    {
+      "source_folder": "rare books and manuscripts/Fables de Florian",
+      "pages": 5
+    },
+    {
+      "source_folder": "rare books and manuscripts/Indian Textile Patterns",
+      "pages": 5
+    },
+    {
+      "source_folder": "rare books and manuscripts/Junji Ito",
+      "pages": 5
+    },
+    {
+      "source_folder": "rare books and manuscripts/Nos Enfants",
+      "pages": 5
+    },
+    {
+      "source_folder": "rare books and manuscripts/On the muscular and endoskeletal systems of Limulus and Scorpio",
+      "pages": 5
+    },
+    {
+      "source_folder": "rare books and manuscripts/Ottheinrich Miniatures",
+      "pages": 5
+    },
+    {
+      "source_folder": "rare books and manuscripts/Sword Hilt Designs",
+      "pages": 5
+    },
+    {
+      "source_folder": "rare books and manuscripts/The natural history of Norway",
+      "pages": 5
+    },
+    {
+      "source_folder": "rare books and manuscripts/Victorian Illustrations",
+      "pages": 5
+    },
+    {
+      "source_folder": "rare books and manuscripts/Vintage Science Fiction",
+      "pages": 5
+    },
+    {
+      "source_folder": "rare books and manuscripts/squircle alphanumeric",
+      "pages": 5
+    },
+    {
+      "source_folder": "vintage illustration/harpers weekly",
+      "pages": 5
+    }
+  ]
+}
