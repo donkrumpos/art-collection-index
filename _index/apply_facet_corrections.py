@@ -62,8 +62,10 @@ def main():
             for path, tag, score in targets:
                 db.execute("DELETE FROM facets WHERE path=? AND facet='kind' "
                            "AND tag=?", (path, tag))
-                db.execute("INSERT OR IGNORE INTO facets(path, facet, tag, score) "
-                           "VALUES (?, 'kind', 'artwork', ?)", (path, score))
+                # source='ocr' so auto_tag.py's clip-scoped rerun DELETEs
+                # don't wipe these corrections
+                db.execute("INSERT OR IGNORE INTO facets(path, facet, tag, score, source) "
+                           "VALUES (?, 'kind', 'artwork', ?, 'ocr')", (path, score))
                 w.writerow([path, tag, 'artwork',
                             by_path[path].get('chars', 0), score])
         db.commit()
