@@ -118,6 +118,12 @@ def main():
         [(p, "folder", p.split(os.sep)[0]) for p in paths],
     )
 
+    # OCR corrections (apply_facet_corrections.py, source='ocr') outrank
+    # zero-shot CLIP on `kind` — OCR read the actual page. Don't re-insert
+    # CLIP's opinion for those paths.
+    ocr_kind = {p for (p,) in conn.execute(
+        "SELECT path FROM facets WHERE facet='kind' AND source='ocr'")}
+
     # --- CLIP zero-shot facets ---
     for facet, mapping in V.FACETS.items():
         labels = list(mapping.keys())
@@ -134,6 +140,8 @@ def main():
             doc_js = [k for k, lab in enumerate(labels) if lab in V.DOCUMENT_KINDS]
             art = scores[:, art_j]
             for i in range(n):
+                if paths[i] in ocr_kind:
+                    continue
                 best_doc = max(doc_js, key=lambda k: scores[i, k])
                 if scores[i, best_doc] > art[i] + V.KIND_MARGIN:
                     rows.append((paths[i], facet, labels[best_doc],

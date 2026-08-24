@@ -41,6 +41,7 @@ except Exception:
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(HERE, "index.db")
+CORPUS_DB = os.path.join(HERE, "research", "corpus.db")  # OCR book corpus (optional)
 THUMB_DIR = os.path.join(HERE, ".thumbs")
 os.makedirs(THUMB_DIR, exist_ok=True)
 
@@ -293,6 +294,17 @@ figcaption{padding:8px 9px;font-size:11px;color:var(--dim);word-break:break-all;
 .chip.llm.on{border-color:var(--gold)}
 .chip.llm::before{content:"✦ ";opacity:.6}
 .foot{padding:10px 18px 70px;text-align:center;color:var(--dim)}
+/* ---- OCR book-page hits strip ---- */
+.textstrip{display:none;gap:10px;overflow-x:auto;padding:12px 18px 0}
+.textstrip.on{display:flex}
+.tcard{flex:0 0 300px;background:var(--panel);border:1px solid #26231c;border-radius:10px;
+ padding:9px;display:flex;gap:9px;font-size:11px;color:var(--dim)}
+.tcard img{width:64px;height:84px;object-fit:cover;border-radius:6px;cursor:zoom-in;
+ background:#0c0b09;flex:0 0 64px}
+.tcard .tbook{color:var(--gold);font-weight:600;margin-bottom:3px;
+ display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.tcard .tsnip{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.tcard .tsnip b{color:#e8dfc6}
 /* ---- info dossier panel ---- */
 .overlay{position:fixed;inset:0;background:rgba(8,7,5,.72);backdrop-filter:blur(3px);
  z-index:50;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
@@ -347,6 +359,7 @@ figcaption{padding:8px 9px;font-size:11px;color:var(--dim);word-break:break-all;
   </span>
  </div>
 </header>
+<div class=textstrip id=textstrip></div>
 <div class=grid id=grid></div>
 <div class=foot id=foot></div>
 <div class=overlay id=overlay onclick="if(event.target===this)closeInfo()">
@@ -385,7 +398,30 @@ function tile(r){
  fig.appendChild(wrap); fig.appendChild(cap);
  return fig;
 }
-function reset(){grid.innerHTML='';foot.textContent='';page=0;done=false;total=0;}
+const tstrip=document.getElementById('textstrip');
+function reset(){grid.innerHTML='';foot.textContent='';page=0;done=false;total=0;
+ tstrip.innerHTML='';tstrip.classList.remove('on');}
+async function loadText(qtext){
+ // OCR book-page hits (exact words) alongside the CLIP image results
+ const d=await (await fetch('/api/text?q='+encodeURIComponent(qtext)+'&n=12')).json();
+ if(!d.results.length) return;
+ d.results.forEach(r=>{
+  const card=document.createElement('div'); card.className='tcard';
+  const img=document.createElement('img'); img.loading='lazy';
+  img.src='/thumb?path='+encodeURIComponent(r.path)+'&s=256';
+  img.onclick=()=>window.open('/full?path='+encodeURIComponent(r.path));
+  const txt=document.createElement('div');
+  const bk=document.createElement('div'); bk.className='tbook';
+  bk.textContent=r.book.split('/').pop(); bk.title=r.book+' · '+r.page;
+  const sn=document.createElement('div'); sn.className='tsnip';
+  // escape, then swap the \x01/\x02 match markers for <b>
+  sn.textContent=r.snippet;
+  sn.innerHTML=sn.innerHTML.replace(/\x01/g,'<b>').replace(/\x02/g,'<\/b>');
+  txt.appendChild(bk); txt.appendChild(sn); card.appendChild(img); card.appendChild(txt);
+  tstrip.appendChild(card);
+ });
+ tstrip.classList.add('on');
+}
 function append(items){items.forEach(r=>grid.appendChild(tile(r)));}
 function selParams(){let p=[...selected].map(s=>'t='+encodeURIComponent(s));
  p.push('docs='+docsMode);return p.join('&');}
@@ -410,7 +446,7 @@ async function load(){
  if(!done && document.body.offsetHeight<window.innerHeight+400) load();
 }
 function rerun(){reset(); if(mode==='browse')load(); else if(mode==='search')doSearch(); else load();}
-function doSearch(){const v=qEl.value.trim();if(!v)return;mode='search';query=v;reset();load();}
+function doSearch(){const v=qEl.value.trim();if(!v)return;mode='search';query=v;reset();load();loadText(v);}
 function doSimilar(path){mode='similar';query=path;reset();window.scrollTo(0,0);load();}
 function clearAll(){mode='browse';query='';qEl.value='';selected.clear();syncChips();rerun();}
 function clearFilters(){selected.clear();syncChips();rerun();}
@@ -554,6 +590,26 @@ class Handler(BaseHTTPRequestHandler):
                 if not text.strip():
                     return self._json({"results": []})
                 return self._json({"results": rank(encode_text(text), n, effective(sel, docs))})
+
+            if u.path == "/api/text":
+                # OCR book-corpus FTS hits for a search query (empty if no corpus)
+                text = q.get("q", [""])[0].strip()
+                n = min(int(q.get("n", ["12"])[0]), 40)
+                if not text or not os.path.exists(CORPUS_DB):
+                    return self._json({"results": []})
+                try:
+                    cdb = sqlite3.connect(f"file:{CORPUS_DB}?mode=ro", uri=True)
+                    rows = cdb.execute(
+                        "SELECT book, page, path, "
+                        "snippet(pages, 3, char(1), char(2), ' … ', 14) "
+                        "FROM pages WHERE pages MATCH ? ORDER BY rank LIMIT ?",
+                        (text, n)).fetchall()
+                    cdb.close()
+                except sqlite3.OperationalError:
+                    rows = []  # bad FTS syntax or corpus missing the table
+                return self._json({"results": [
+                    {"book": b, "page": p, "path": pt, "snippet": s}
+                    for b, p, pt, s in rows]})
 
             if u.path == "/api/similar":
                 path = q.get("path", [""])[0]

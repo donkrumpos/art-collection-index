@@ -24,7 +24,9 @@ INDEX = os.path.dirname(os.path.abspath(__file__))
 PAGES_DIR = os.path.join(INDEX, 'research', '.pages')
 LOG_CSV = os.path.join(INDEX, 'research', 'facet-corrections.csv')
 DOC_TAGS = ('text page', 'title page', 'text with figure')
-MAX_CHARS = 2
+# Raised 2 -> 9 on 2026-08-24 after visually spot-checking the 3-9 char band
+# (Jamnitzer plates, herbal woodcuts, ex libris, ephemera): all image-dominant.
+MAX_CHARS = 9
 
 
 def main():
