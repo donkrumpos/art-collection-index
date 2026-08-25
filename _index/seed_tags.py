@@ -53,6 +53,7 @@ def main():
     if not os.path.exists(DB_PATH):
         raise SystemExit(f"No index at {DB_PATH}. Run embed.py first.")
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA busy_timeout=60000")  # wait out a concurrent writer (e.g. describe.py sweep)
     ensure_schema(conn)
 
     if args.stats:

@@ -132,7 +132,7 @@ SYSTEM_PROMPT = (
 # ---- Index / neighbors -----------------------------------------------------
 
 def load_index(conn):
-    root = conn.execute("SELECT value FROM meta WHERE key='root'").fetchone()[0]
+    root = os.path.dirname(HERE)  # portable: derive from script location, not stored absolute path
     paths, vecs = [], []
     for p, e in conn.execute("SELECT path, embedding FROM images ORDER BY path"):
         paths.append(p)

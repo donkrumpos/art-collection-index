@@ -79,6 +79,7 @@ def pick_device():
 def open_db():
     conn = sqlite3.connect(DB_PATH)
     conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=60000")  # wait out a concurrent writer (e.g. describe.py sweep)
     conn.execute(
         """
         CREATE TABLE IF NOT EXISTS images (

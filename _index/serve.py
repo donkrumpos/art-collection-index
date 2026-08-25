@@ -59,7 +59,7 @@ FACET_LABEL = {"medium": "Medium", "style": "Style / Era", "subject": "Subject",
 print("Loading index...")
 _conn = sqlite3.connect(DB_PATH, check_same_thread=False)
 MODEL_ID = _conn.execute("SELECT value FROM meta WHERE key='model'").fetchone()[0]
-ROOT = _conn.execute("SELECT value FROM meta WHERE key='root'").fetchone()[0]
+ROOT = os.path.dirname(HERE)  # collection root = parent of _index/ (portable; ignores stale absolute path stored in DB)
 
 _PATHS, _vecs = [], []
 for _p, _emb in _conn.execute("SELECT path, embedding FROM images ORDER BY path"):

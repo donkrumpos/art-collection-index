@@ -40,8 +40,7 @@ def load_index():
     conn = sqlite3.connect(DB_PATH)
     row = conn.execute("SELECT value FROM meta WHERE key='model'").fetchone()
     model = row[0] if row else None
-    root_row = conn.execute("SELECT value FROM meta WHERE key='root'").fetchone()
-    root = root_row[0] if root_row else os.path.dirname(HERE)
+    root = os.path.dirname(HERE)  # portable: derive from script location, not stored absolute path
 
     paths, vecs = [], []
     for path, emb in conn.execute("SELECT path, embedding FROM images"):

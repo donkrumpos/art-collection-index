@@ -56,7 +56,7 @@ def main():
     args = ap.parse_args()
 
     conn = sqlite3.connect(DB_PATH)
-    root = conn.execute("SELECT value FROM meta WHERE key='root'").fetchone()[0]
+    root = os.path.dirname(HERE)  # portable: derive from script location, not stored absolute path
 
     if args.stats:
         n = conn.execute(
