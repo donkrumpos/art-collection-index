@@ -1,6 +1,7 @@
 # This 43GB collection is NOT versioned — only the _index/ tooling code is.
 /*
 !/.gitignore
+!/README.md
 !/_index/
 
 # Within _index: keep code + docs, drop all generated data, venv, and the
